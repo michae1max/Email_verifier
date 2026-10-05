@@ -1,0 +1,3 @@
+import {NextResponse} from 'next/server'; import {prisma} from '@/lib/database/prisma'; import {cancelJob} from '@/lib/jobs/runner';
+export async function GET(_:Request,{params}:{params:Promise<{jobId:string}>}){const {jobId}=await params; const job=await prisma.verificationJob.findUnique({where:{id:jobId},include:{candidates:true}}); return job?NextResponse.json(job):NextResponse.json({error:'Not found'},{status:404})}
+export async function DELETE(_:Request,{params}:{params:Promise<{jobId:string}>}){const {jobId}=await params; cancelJob(jobId); await prisma.verificationJob.delete({where:{id:jobId}}); return NextResponse.json({ok:true})}

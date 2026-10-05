@@ -1,0 +1,2 @@
+import type { NormalizedEmail } from '@/types/verification';
+export function normalizeEmail(input:string):NormalizedEmail { const s=input.trim().replace(/^mailto:/i,'').replace(/^['"“”<\s]+|['"“”>\s]+$/g,'').replace(/[),.;:]+$/g,'').trim(); const m=s.match(/[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9-]+(?:\.[A-Z0-9-]+)+/i); const normalized=(m?.[0]??s).toLowerCase(); const at=normalized.lastIndexOf('@'); return {originalInput:input,normalized,localPart:at>0?normalized.slice(0,at):'',domain:at>0?normalized.slice(at+1):''}; }

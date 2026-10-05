@@ -1,0 +1,2 @@
+const fields=['rank','email','status','evidence_strength','ranking_score','format_valid','mx_found','smtp_attempted','smtp_accepted','smtp_rejected','smtp_response_category','catch_all','disposable','role_address','pattern_type','pattern_score','reason','checked_at'];
+const safe=(v:unknown)=>{const s=String(v??''); return /^[=+\-@]/.test(s)?`'${s}`:s}; export function exportCandidates(rows:Record<string,unknown>[]):string { return [fields.join(','),...rows.map((r,i)=>fields.map(f=>JSON.stringify(safe(f==='rank'?i+1:r[f]))).join(','))].join('\n'); }

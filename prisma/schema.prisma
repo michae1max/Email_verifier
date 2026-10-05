@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+}
+
+model VerificationJob {
+  id String @id @default(cuid())
+  rawInput String
+  inputType String
+  firstName String?
+  lastName String?
+  nickname String?
+  status String @default("pending")
+  smtpEnabled Boolean @default(false)
+  totalInput Int @default(0)
+  totalUnique Int @default(0)
+  processedCount Int @default(0)
+  createdAt DateTime @default(now())
+  completedAt DateTime?
+  updatedAt DateTime @updatedAt
+  candidates VerificationCandidate[]
+}
+
+model VerificationCandidate {
+  id String @id @default(cuid())
+  jobId String
+  job VerificationJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  originalInput String
+  email String
+  normalizedEmail String
+  localPart String
+  domain String
+  status String @default("pending")
+  evidenceStrength String?
+  rankingScore Float?
+  syntaxValid Boolean @default(false)
+  mxFound Boolean @default(false)
+  smtpAttempted Boolean @default(false)
+  smtpAccepted Boolean?
+  smtpRejected Boolean?
+  smtpResponseCode Int?
+  smtpResponseCategory String?
+  catchAll Boolean?
+  disposable Boolean @default(false)
+  roleAddress Boolean @default(false)
+  patternType String?
+  patternScore Float?
+  reason String?
+  checkedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([jobId])
+  @@index([domain])
+}
+
+model DomainCache {
+  id String @id @default(cuid())
+  domain String @unique
+  mxStatus String
+  mxRecordsJson String?
+  catchAll Boolean?
+  circuitState String?
+  cooldownUntil DateTime?
+  checkedAt DateTime @default(now())
+  expiresAt DateTime
+}
