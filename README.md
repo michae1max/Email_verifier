@@ -9,10 +9,18 @@ npm install
 cp .env.example .env.local
 npx prisma generate
 npx prisma migrate dev --name init
-npm run dev
+npm run dev:clean
 ```
 
 Open http://localhost:3000.
+
+For the most stable experience after code changes, use the production server:
+
+```bash
+npm run start:stable
+```
+
+The previous “local server returned an error page” message happened when Next.js development mode was recompiling or when a stale `.next` cache was left behind after switching between `next dev` and `next build`. The browser now retries transient 500/502/503/504 and HTML responses, all API routes return JSON errors, and `npm run dev:clean` removes the stale cache before starting.
 
 ## SMTP mailbox checks
 
