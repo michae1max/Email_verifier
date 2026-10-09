@@ -2,25 +2,27 @@
 
 A localhost-only email candidate evidence tool built with Next.js, TypeScript, Prisma, and SQLite.
 
-## Run locally
+## Run from VS Code
+
+Open the project folder in VS Code, then open **Terminal → New Terminal** and run:
 
 ```bash
 npm install
-cp .env.example .env.local
-npx prisma generate
-npx prisma migrate dev --name init
+npm run setup
 npm run dev:clean
 ```
 
 Open http://localhost:3000.
 
-For the most stable experience after code changes, use the production server:
+`npm run setup` is important: it creates the Prisma `.env` file from `.env.local` or `.env.example`, generates Prisma Client, and applies the SQLite migration. This prevents the common “unable to start verification” error caused by Prisma not seeing `.env.local`.
+
+For the most stable experience after code changes, use:
 
 ```bash
 npm run start:stable
 ```
 
-The previous “local server returned an error page” message happened when Next.js development mode was recompiling or when a stale `.next` cache was left behind after switching between `next dev` and `next build`. The browser now retries transient 500/502/503/504 and HTML responses, all API routes return JSON errors, and `npm run dev:clean` removes the stale cache before starting.
+The browser retries transient Next.js error pages, and the API now reports actionable database/setup errors instead of hiding them behind a generic message.
 
 ## SMTP mailbox checks
 

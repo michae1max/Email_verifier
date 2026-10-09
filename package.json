@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "setup": "node scripts/setup-local.cjs",
     "dev": "next dev",
     "dev:clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\" && next dev",
     "build": "next build",
     "start": "next start",
-    "start:stable": "npm run build && next start",
+    "start:stable": "npm run setup && npm run build && next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
