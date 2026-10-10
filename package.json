@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "start:stable": "npm run setup && npm run build && next start",
+    "e2e:server": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\" && next dev -p 3100",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
